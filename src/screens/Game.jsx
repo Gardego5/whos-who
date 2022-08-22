@@ -26,6 +26,15 @@ const StyledContainer = styled.div`
 `;
 
 const Game = () => {
+  const retrievedGenre = JSON.parse(localStorage.getItem("genreKey"));
+  localStorage.setItem("genreGKey", JSON.stringify(retrievedGenre));
+
+  const retrievedSongs = JSON.parse(localStorage.getItem("songsKey"));
+  localStorage.setItem("songsGKey", JSON.stringify(retrievedSongs));
+
+  const retrievedArtists = JSON.parse(localStorage.getItem("artistsKey"));
+  localStorage.setItem("artistsGKey", JSON.stringify(retrievedArtists));
+
   return (
     <StyledContainer>
       <header>
