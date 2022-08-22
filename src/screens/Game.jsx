@@ -30,7 +30,8 @@ const StyledContainer = styled.div`
   }
 `;
 
-const randomLetter = () => 'abcdefghijklmnopqrstuvwxyz'.charAt(Math.floor(Math.random() * 26));
+const randomLetter = () =>
+  "abcdefghijklmnopqrstuvwxyz".charAt(Math.floor(Math.random() * 26));
 
 const Game = () => {
   const [renderOverride, updateRenderOverride] = useState();
@@ -38,7 +39,7 @@ const Game = () => {
   const [initialSong, setInitialSong] = useState();
   const [songs, updateSongs] = useState();
   const [artists, updateArtists] = useState();
-  
+
   const retrievedGenre = JSON.parse(localStorage.getItem("genreKey"));
   const retrievedSongs = JSON.parse(localStorage.getItem("songsKey"));
   const retrievedArtists = JSON.parse(localStorage.getItem("artistsKey"));
@@ -51,18 +52,18 @@ const Game = () => {
         q: `${randomLetter()} genre:${genre}`,
         type: "track",
         offset: Math.floor(Math.random() * 4),
-      }
+      },
     });
 
     setInitialSong(response.tracks.items[Math.floor(Math.random() * 20)]);
-  }
-  
+  };
+
   const getArtists = async () => {
     const artistsResponse = await fetchFromSpotify({
       token,
       endpoint: `artists/${initialSong.artists[0].id}/related-artists`,
     });
-    updateArtists(artistsResponse.artists)
+    updateArtists(artistsResponse.artists);
   };
 
   const getSongs = async () => {
@@ -72,7 +73,7 @@ const Game = () => {
       params: {
         q: `artist:${initialSong.artists[0].name}`,
         type: "track",
-      }
+      },
     });
     updateSongs(songsResponse.tracks.items);
   };
@@ -88,7 +89,7 @@ const Game = () => {
         } else {
           return updateRenderOverride(<Redirect to="/" />);
         }
-      } else { 
+      } else {
         return updateRenderOverride(<Redirect to="/" />);
       }
     }
@@ -101,8 +102,6 @@ const Game = () => {
   return renderOverride ? (
     renderOverride
   ) : (
-
-  return (
     <StyledContainer>
       <header>
         <h1>Who's Who?</h1>
