@@ -10,31 +10,43 @@ const TOKEN_KEY = "whos-who-access-token";
 
 const Home = () => {
   const [genres, setGenres] = useState([]);
-  const [selectedGenre, setSelectedGenre] = useState("");
+  const [selectedGenre, setSelectedGenre] = useState(null);
   const [authLoading, setAuthLoading] = useState(false);
   const [configLoading, setConfigLoading] = useState(false);
   const [token, setToken] = useState("");
 
-  const [numSongs, setNumSongs] = useState(1);
-  const [numArtists, setNumArtists] = useState(2);
+  const [numSongs, setNumSongs] = useState(null);
+  const [numArtists, setNumArtists] = useState(null);
   // const [retrievedSelectedGenre, retrievedSetSelectedGenre] = useState("");
 
   useEffect(() => {
+    if (selectedGenre === null) {
+      const savedGenre = JSON.parse(localStorage.getItem("genreKey"));
+      setSelectedGenre(savedGenre != null ? savedGenre : "");
+    }
     localStorage.setItem("genreKey", JSON.stringify(selectedGenre));
   }, [selectedGenre]);
 
   // const retrievedGenre = JSON.parse(localStorage.getItem("genreKey"));
 
   const retrievedSelectedGenre = JSON.parse(localStorage.getItem("genreGKey"));
-  if (retrievedSelectedGenre) {
-    setSelectedGenre = retrievedSelectedGenre;
-  }
+  // if (retrievedSelectedGenre) {
+  //   setSelectedGenre = retrievedSelectedGenre;
+  // }
 
   useEffect(() => {
+    if (numSongs === null) {
+      const savedSongs = JSON.parse(localStorage.getItem("songsKey"));
+      setNumSongs(savedSongs != null ? savedSongs : 1);
+    }
     localStorage.setItem("songsKey", JSON.stringify(numSongs));
   }, [numSongs]);
 
   useEffect(() => {
+    if (numArtists === null) {
+      const savedArtists = JSON.parse(localStorage.getItem("artistsKey"));
+      setNumArtists(savedArtists != null ? savedArtists : 2);
+    }
     localStorage.setItem("artistsKey", JSON.stringify(numArtists));
   }, [numArtists]);
 
