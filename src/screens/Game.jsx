@@ -38,6 +38,10 @@ const Game = () => {
   const [initialSong, setInitialSong] = useState();
   const [songs, updateSongs] = useState();
   const [artists, updateArtists] = useState();
+  
+  const retrievedGenre = JSON.parse(localStorage.getItem("genreKey"));
+  const retrievedSongs = JSON.parse(localStorage.getItem("songsKey"));
+  const retrievedArtists = JSON.parse(localStorage.getItem("artistsKey"));
 
   const getRandomSong = async (genre) => {
     const response = await fetchFromSpotify({
@@ -97,6 +101,8 @@ const Game = () => {
   return renderOverride ? (
     renderOverride
   ) : (
+
+  return (
     <StyledContainer>
       <header>
         <h1>Who's Who?</h1>

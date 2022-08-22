@@ -1,4 +1,5 @@
 import React, { Fragment, useEffect, useState } from "react";
+import { Route, Link } from "react-router-dom";
 import fetchFromSpotify, { request } from "../services/api";
 
 import Button from "../components/Button";
@@ -9,13 +10,45 @@ const TOKEN_KEY = "whos-who-access-token";
 
 const Home = () => {
   const [genres, setGenres] = useState([]);
-  const [selectedGenre, setSelectedGenre] = useState("");
+  const [selectedGenre, setSelectedGenre] = useState(null);
   const [authLoading, setAuthLoading] = useState(false);
   const [configLoading, setConfigLoading] = useState(false);
   const [token, setToken] = useState("");
 
-  const [numSongs, setNumSongs] = useState(1);
-  const [numArtists, setNumArtists] = useState(2);
+  const [numSongs, setNumSongs] = useState(null);
+  const [numArtists, setNumArtists] = useState(null);
+  // const [retrievedSelectedGenre, retrievedSetSelectedGenre] = useState("");
+
+  useEffect(() => {
+    if (selectedGenre === null) {
+      const savedGenre = JSON.parse(localStorage.getItem("genreKey"));
+      setSelectedGenre(savedGenre != null ? savedGenre : "");
+    }
+    localStorage.setItem("genreKey", JSON.stringify(selectedGenre));
+  }, [selectedGenre]);
+
+  // const retrievedGenre = JSON.parse(localStorage.getItem("genreKey"));
+
+  const retrievedSelectedGenre = JSON.parse(localStorage.getItem("genreGKey"));
+  // if (retrievedSelectedGenre) {
+  //   setSelectedGenre = retrievedSelectedGenre;
+  // }
+
+  useEffect(() => {
+    if (numSongs === null) {
+      const savedSongs = JSON.parse(localStorage.getItem("songsKey"));
+      setNumSongs(savedSongs != null ? savedSongs : 1);
+    }
+    localStorage.setItem("songsKey", JSON.stringify(numSongs));
+  }, [numSongs]);
+
+  useEffect(() => {
+    if (numArtists === null) {
+      const savedArtists = JSON.parse(localStorage.getItem("artistsKey"));
+      setNumArtists(savedArtists != null ? savedArtists : 2);
+    }
+    localStorage.setItem("artistsKey", JSON.stringify(numArtists));
+  }, [numArtists]);
 
   const loadGenres = async (t) => {
     setConfigLoading(true);
@@ -71,6 +104,7 @@ const Home = () => {
 
   return (
     <Fragment>
+      <Route path="/game" />
       <h1>Who's Who?</h1>
       <div>
         Genre:
@@ -108,18 +142,20 @@ const Home = () => {
         ></input>
         <p>Value: {numArtists}</p>
       </div>
-      <Button
-        className="submitDuel"
-        h={"55px"}
-        w={"180px"}
-        br={"20px"}
-        // p={"absolute"}
-        // t={"15%"}
-        // l={"42.4%"}
-        // onClick={foundUsers}
-      >
-        Begin
-      </Button>
+      <Link to={"/game"}>
+        <Button
+          className="submitWho"
+          h={"55px"}
+          w={"180px"}
+          br={"20px"}
+          // p={"absolute"}
+          // t={"15%"}
+          // l={"42.4%"}
+          // onClick={foundUsers}
+        >
+          Begin
+        </Button>
+      </Link>
     </Fragment>
   );
 };
