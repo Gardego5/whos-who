@@ -64,9 +64,13 @@ const Game = () => {
   const getSongs = async () => {
     const songsResponse = await fetchFromSpotify({
       token,
-      endpoint: `artists/${initialSong.artists[0].id}/top-tracks`,
+      endpoint: `search`,
+      params: {
+        q: `artist:${initialSong.artists[0].name}`,
+        type: "track",
+      }
     });
-    updateSongs(songsResponse);
+    updateSongs(songsResponse.tracks.items);
   };
 
   useEffect(() => {
