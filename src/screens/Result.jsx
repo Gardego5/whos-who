@@ -1,6 +1,7 @@
 import React from "react";
 import Card from '../components/Card'
 import styled from "styled-components";
+import Button from "../components/Button";
 const StyledContainer = styled.div`
   & header {
     text-align: center;
@@ -18,6 +19,9 @@ const StyledContainer = styled.div`
     gap: 1rem;
     margin: 1rem;
   }
+  & Button {
+    text-align: center;
+  }
 `;
 const Result = () => {
   return <StyledContainer>
@@ -26,7 +30,8 @@ const Result = () => {
   <h1>Who's Who<span style={{color: "red"}}>?</span></h1>
  </header>
  <Card>
-  <h3>Here are your results:</h3>
+  <h3 style={{textAlign: 'center'}}>Results</h3>
+  <Button h = '30px' style={{alignSelf: 'center'}}>Home</Button>
  </Card>
   
 
