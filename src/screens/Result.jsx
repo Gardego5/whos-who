@@ -2,6 +2,7 @@ import React from "react";
 import Card from '../components/Card'
 import styled from "styled-components";
 import Button from "../components/Button";
+import { Link } from "react-router-dom";
 const StyledContainer = styled.div`
   & header {
     text-align: center;
@@ -24,16 +25,17 @@ const StyledContainer = styled.div`
   }
 `;
 const Result = () => {
-  return <StyledContainer>
+  return <StyledContainer style={{textAlign: 'center'}}>
  <header>
 
   <h1>Who's Who<span style={{color: "red"}}>?</span></h1>
  </header>
  <Card>
   <h3 style={{textAlign: 'center'}}>Results</h3>
-  <Button h = '30px' style={{alignSelf: 'center'}}>Home</Button>
  </Card>
-  
+<Link to='/'><Button h = '30px' m = 'auto' style={{justifyContent: 'center'}}>Home</Button></Link>
+ <Link to='/game'><Button h = '30px' m = 'auto' style={{justifyContent: 'center'}}>Play Again</Button></Link>
+
 
   </StyledContainer>
 }
