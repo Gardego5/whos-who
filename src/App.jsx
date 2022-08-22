@@ -1,12 +1,12 @@
-import React from 'react'
-import { Route } from 'react-router-dom'
+import React from "react";
+import { Route } from "react-router-dom";
 
-import Home from './screens/Home'
+import Home from "./screens/Home";
 
 const App = () => (
   <div>
-    <Route exact path='/' component={Home} />
+    <Route exact path="/" component={Home} />
   </div>
-)
+);
 
-export default App
+export default App;
