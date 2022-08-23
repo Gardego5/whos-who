@@ -11,13 +11,16 @@ const Button = styled.button`
   box-shadow: 0 3px #aaa;
   margin: ${({ m }) => m};
   font-size: 14px;
+  background-color: black;
+  color: white;
   &:hover {
     background-color: #c9c9c9;
     box-shadow: 0 3px #666;
     cursor: pointer;
   }
   &:active {
-    background-color: #c9c9c9;
+    background-color: black;
+    color: white;
     box-shadow: none;
     transform: translateY(3px);
   }
