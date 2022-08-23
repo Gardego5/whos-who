@@ -9,6 +9,7 @@ const Card = styled.div`
   padding: ${({ p = "0.5rem" }) => p};
   background: ${({ bg }) => bg};
   color: ${({ c }) => c};
+  cursor: ${({ cur }) => cur};
   & img {
     width: 100%;
     aspect-ratio: 1 / 1;
