@@ -7,7 +7,7 @@ const StyledContainer = styled.div`
   & header {
     text-align: center;
     border: 2px solid white;
-    background-color: darkblue;
+    background-color: black;
     color: white;
   }
   & header h1 {
@@ -24,19 +24,24 @@ const StyledContainer = styled.div`
     text-align: center;
   }
   & #score {
-    color: red;
+    color: white;
   }
 `;
 const Result = () => {
   const [score, setScore] = useState(null)
 
  const totalScore = JSON.parse(localStorage.getItem('RESULTS_KEY'))
+ const artistKey = JSON.parse(localStorage.getItem('artistsKey'))
+ console.log(artistKey)
 
 useEffect(() => {
-  if(totalScore.game.tries > 0){
+  if(totalScore.game.tries > 0 && artistKey > 1){
     setScore(`Winner! you had ${totalScore.game.tries} amount of tries left!`)
-  } else if (totalScore.game.tries <1)
+  } else if (totalScore.game.tries < 1) {
     setScore(`You lose! you ran out of tries :(`)
+  } else if (totalScore.game.tries <= 1 && artistKey <= 2){
+    setScore(`You lose! you ran out of tries :(`)
+  }
 }, []) 
 
 console.log(score)
