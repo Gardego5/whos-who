@@ -6,7 +6,6 @@ import ProgressBar from "../components/ProgressBar";
 import SongCard from "../components/SongCard";
 import ArtistCard from "../components/ArtistCard";
 import fetchFromSpotify from "../services/api";
-import { async } from "regenerator-runtime";
 
 const TOKEN_KEY = "whos-who-access-token";
 const GENRE_KEY = "genreKey";
@@ -64,17 +63,15 @@ const Game = () => {
 
   const testCorrect = (artist, correct) => (event) => {
     if (correct) {
-      localStorage.setItem(RESULTS_KEY, JSON.stringify({game, win: true}));
+      localStorage.setItem(RESULTS_KEY, JSON.stringify({ game, win: true }));
       updateRenderOverride(<Redirect to="result" />);
       return;
     } else {
       if (game.tries > 0) {
-        updateArtists(
-          artists.filter((a) => a.artist !== artist )
-        );
+        updateArtists(artists.filter((a) => a.artist !== artist));
         updateGame({ ...game, tries: game.tries - 1 });
       } else {
-        localStorage.setItem(RESULTS_KEY, JSON.stringify({game, win: false}));
+        localStorage.setItem(RESULTS_KEY, JSON.stringify({ game, win: false }));
       }
     }
   };
