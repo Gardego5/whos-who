@@ -79,7 +79,26 @@ const Home = () => {
       endpoint: "recommendations/available-genre-seeds",
     });
     console.log(response);
-    setGenres(response.genres);
+    console.log();
+    setGenres(
+      response.genres.filter(
+        (genre, idx) =>
+          [
+            "bossanova",
+            "holidays",
+            "movies",
+            "metal-misc",
+            "new-release",
+            "philippines-opm",
+            "post-dubstep",
+            "rainy-day",
+            "road-trip",
+            "soundtracks",
+            "summer",
+            "work-out",
+          ].findIndex((g) => g === genre) === -1
+      )
+    );
     setConfigLoading(false);
   };
 
