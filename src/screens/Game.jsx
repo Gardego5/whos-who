@@ -58,22 +58,34 @@ const Game = () => {
 
   /* * * Game * * */
   const [game, updateGame] = useState({
-    tries: 2,
+    tries: 5,
+    rounds: 5,
+    results: [],
   });
 
   const testCorrect = (artist, correct) => (event) => {
-    if (correct) {
-      localStorage.setItem(RESULTS_KEY, JSON.stringify({ game, win: true }));
+    if (correct && game.results.length === game.rounds - 1) {
+      const newGameState = {
+        ...game,
+        results: [...game.results, config.retrievedArtists - artists.length],
+      };
+
+      localStorage.setItem(RESULTS_KEY, JSON.stringify({ newGameState, win: true }));
       updateRenderOverride(<Redirect to="result" />);
-      return;
+    } else if (correct) {
+      updateGame({
+        ...game,
+        results: [...game.results, config.retrievedArtists - artists.length],
+      })
+      updateInitialSong(undefined)
     } else {
       updateArtists(artists.filter((a) => a.artist !== artist));
       updateGame({ ...game, tries: game.tries - 1 });
-    }
 
-    if (game.tries <= 0) {
-      localStorage.setItem(RESULTS_KEY, JSON.stringify({ game, win: false }));
-      updateRenderOverride(<Redirect to="result" />);
+      if (game.tries <= 0) {
+        localStorage.setItem(RESULTS_KEY, JSON.stringify({ game, win: false }));
+        updateRenderOverride(<Redirect to="result" />);
+      }
     }
   };
 
