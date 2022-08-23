@@ -8,9 +8,9 @@ const Button = styled.button`
   left: ${({ l }) => l};
   border-radius: ${({ br }) => br};
   border: ${({ b }) => b};
-  margin: ${({m}) => m};
-  font-size: 12px;
   box-shadow: 0 3px #aaa;
+  margin: ${({ m }) => m};
+  font-size: 14px;
   &:hover {
     background-color: #c9c9c9;
     box-shadow: 0 3px #666;
