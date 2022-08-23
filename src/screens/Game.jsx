@@ -42,7 +42,7 @@ const randomChoices = (arr, count) =>
 const Game = () => {
   const [renderOverride, updateRenderOverride] = useState();
   const [token, setToken] = useState("");
-  const [initialSong, setInitialSong] = useState();
+  const [initialSong, updateInitialSong] = useState();
   const [songs, updateSongs] = useState();
   const [artists, updateArtists] = useState();
 
@@ -88,7 +88,11 @@ const Game = () => {
       },
     });
 
-    setInitialSong(response.tracks.items[Math.floor(Math.random() * 20)]);
+    updateInitialSong(response.tracks.items[Math.floor(Math.random() * 20)]);
+    setTimeout(() => {
+      updateArtists(null);
+      updateSongs(null);
+    }, 300);
   };
 
   const getArtists = async () => {
@@ -119,12 +123,17 @@ const Game = () => {
       },
     });
 
-    updateSongs(
-      randomChoices(
-        songsResponse.tracks.items,
-        config.retrievedSongs - 1
-      ).concat([initialSong])
+    const song_choices = randomChoices(
+      songsResponse.tracks.items.filter((song) => song.preview_url !== null),
+      config.retrievedSongs
     );
+
+    if (song_choices.length < config.retrievedSongs) {
+      console.log("Failed to load songs, picking new initialSong.")
+      updateInitialSong(undefined);
+    } else {
+      updateSongs(song_choices);
+    }
   };
 
   useEffect(() => {
@@ -144,8 +153,8 @@ const Game = () => {
     }
 
     if (token && !initialSong) getRandomSong(config.retrievedGenre);
-    if (token && initialSong && !artists) getArtists();
-    if (token && initialSong && !songs) getSongs();
+    if (token && initialSong && artists === null) getArtists();
+    if (token && initialSong && songs === null) getSongs();
   });
 
   return renderOverride ? (
@@ -158,7 +167,7 @@ const Game = () => {
       </header>
       <main>
         <div className="flex-row" id="songs">
-          {artists === undefined
+          {songs === null || songs === undefined
             ? Array(config.retrievedSongs)
                 .fill(null)
                 .map((none, idx) => <SongCard key={idx} />)
@@ -171,7 +180,7 @@ const Game = () => {
               ))}
         </div>
         <div className="flex-row" id="artists">
-          {artists === undefined
+          {artists === null || artists === undefined
             ? Array(config.retrievedArtists)
                 .fill(null)
                 .map((none, idx) => <ArtistCard key={idx} />)
