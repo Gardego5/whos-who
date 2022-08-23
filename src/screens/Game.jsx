@@ -33,6 +33,9 @@ const StyledContainer = styled.div`
 const randomLetter = () =>
   "abcdefghijklmnopqrstuvwxyz".charAt(Math.floor(Math.random() * 26));
 
+const randomChoices = (arr, count) =>
+  arr.sort(() => Math.random() - 0.5).slice(0, count);
+
 const Game = () => {
   const [renderOverride, updateRenderOverride] = useState();
   const [token, setToken] = useState("");
@@ -40,9 +43,15 @@ const Game = () => {
   const [songs, updateSongs] = useState();
   const [artists, updateArtists] = useState();
 
-  const retrievedGenre = JSON.parse(localStorage.getItem("genreKey"));
-  const retrievedSongs = JSON.parse(localStorage.getItem("songsKey"));
-  const retrievedArtists = JSON.parse(localStorage.getItem("artistsKey"));
+  const [config, updateConfig] = useState({
+    retrievedGenre: JSON.parse(localStorage.getItem("genreKey")),
+    retrievedSongs: Number.parseInt(
+      JSON.parse(localStorage.getItem("songsKey"))
+    ),
+    retrievedArtists: Number.parseInt(
+      JSON.parse(localStorage.getItem("artistsKey"))
+    ),
+  });
 
   const getRandomSong = async (genre) => {
     const response = await fetchFromSpotify({
@@ -59,11 +68,21 @@ const Game = () => {
   };
 
   const getArtists = async () => {
+    const originalArtist = await fetchFromSpotify({
+      token,
+      endpoint: `artists/${initialSong.artists[0].id}`,
+    })
+
     const artistsResponse = await fetchFromSpotify({
       token,
       endpoint: `artists/${initialSong.artists[0].id}/related-artists`,
     });
-    updateArtists(artistsResponse.artists);
+
+    updateArtists(
+      randomChoices(artistsResponse.artists, config.retrievedArtists - 1)
+        .map((artist) => ({ correct: false, artist }))
+        .concat([{ correct: true, artist: originalArtist }])
+    );
   };
 
   const getSongs = async () => {
@@ -75,7 +94,13 @@ const Game = () => {
         type: "track",
       },
     });
-    updateSongs(songsResponse.tracks.items);
+
+    updateSongs(
+      randomChoices(
+        songsResponse.tracks.items,
+        config.retrievedSongs - 1
+      ).concat([initialSong])
+    );
   };
 
   useEffect(() => {
@@ -84,7 +109,7 @@ const Game = () => {
       if (storedTokenString) {
         const storedToken = JSON.parse(storedTokenString);
         if (storedToken.expiration > Date.now()) {
-          console.log("Token found in localstorage");
+          console.log("Token found in localStorage");
           setToken(storedToken.value);
         } else {
           return updateRenderOverride(<Redirect to="/" />);
@@ -94,7 +119,7 @@ const Game = () => {
       }
     }
 
-    if (token && !initialSong) getRandomSong("rock");
+    if (token && !initialSong) getRandomSong(config.retrievedGenre);
     if (token && initialSong && !artists) getArtists();
     if (token && initialSong && !songs) getSongs();
   });
@@ -109,15 +134,20 @@ const Game = () => {
       </header>
       <main>
         <div className="flex-row" id="songs">
-          <SongCard />
-          <SongCard />
-          <SongCard />
+          {artists === undefined
+            ? Array(config.retrievedSongs)
+              .fill(null)
+              .map((none, idx) => <SongCard key={idx} />)
+            : songs
+              .map((song, idx) => <SongCard key={idx} title={song.name} />)}
         </div>
         <div className="flex-row" id="artists">
-          <ArtistCard />
-          <ArtistCard />
-          <ArtistCard />
-          <ArtistCard />
+          {artists === undefined
+            ? Array(config.retrievedArtists)
+              .fill(null)
+              .map((none, idx) => <ArtistCard key={idx} />)
+            : artists
+              .map(({artist}, idx) => <ArtistCard key={idx} picSrc={artist?.images[0]?.url} name={artist.name} />)}
         </div>
       </main>
     </StyledContainer>

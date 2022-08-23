@@ -8,7 +8,15 @@ const Card = styled.div`
   border-radius: ${({ br }) => br};
   padding: ${({ p = "0.5rem" }) => p};
   background: ${({ bg }) => bg};
-  color: ${({ c }) => c}
+  color: ${({ c }) => c};
+  & img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+  }
+  & p {
+    text-align: center;
+  }
 `;
 
 export default Card;
