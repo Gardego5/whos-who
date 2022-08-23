@@ -7,20 +7,20 @@ const Button = styled.button`
   top: ${({ t }) => t};
   left: ${({ l }) => l};
   border-radius: ${({ br }) => br};
-  border: ${({ b }) => b};
+  border: ${({ b = "none" }) => b};
   box-shadow: 0 3px #aaa;
   margin: ${({ m }) => m};
   font-size: 14px;
-  background-color: black;
-  color: white;
+  background-color: white;
+  color: black;
   &:hover {
     background-color: #c9c9c9;
     box-shadow: 0 3px #666;
     cursor: pointer;
   }
   &:active {
-    background-color: black;
-    color: white;
+    background-color: #c9c9c9;
+    color: black;
     box-shadow: none;
     transform: translateY(3px);
   }

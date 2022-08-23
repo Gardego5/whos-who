@@ -4,6 +4,7 @@ import styled from "styled-components";
 import fetchFromSpotify, { request } from "../services/api";
 
 import Button from "../components/Button";
+import Card from "../components/Card";
 
 const AUTH_ENDPOINT =
   "https://nuod0t2zoe.execute-api.us-east-2.amazonaws.com/FT-Classroom/spotify-auth-token";
@@ -13,6 +14,7 @@ const HomeTitle = styled.h1`
   position: relative;
   text-align: center;
   justify-content: center;
+  margin-top: 0;
   font-size: 4em;
 `;
 
@@ -32,6 +34,7 @@ const Home = () => {
 
   const [numSongs, setNumSongs] = useState(null);
   const [numArtists, setNumArtists] = useState(null);
+  const [numRounds, setNumRounds] = useState(null);
 
   //This useEffect hook is used to both set selectedGenre in local storage and retrieve it from local storage
   useEffect(() => {
@@ -59,6 +62,15 @@ const Home = () => {
     }
     localStorage.setItem("artistsKey", JSON.stringify(numArtists));
   }, [numArtists]);
+
+  //This useEffect hook is used to both set numArtists in local storage and retrieve it from local storage
+  useEffect(() => {
+    if (numRounds === null) {
+      const savedNumRounds = JSON.parse(localStorage.getItem("roundsKey"));
+      setNumRounds(savedNumRounds != null ? savedNumRounds : 5);
+    }
+    localStorage.setItem("roundsKey", JSON.stringify(numRounds));
+  }, [numRounds]);
 
   const loadGenres = async (t) => {
     setConfigLoading(true);
@@ -120,71 +132,90 @@ const Home = () => {
     console.log(e.target.value);
   };
 
+  //This function is used to set numArtists with the changes made in the slider
+  const handleRoundsChange = (e) => {
+    setNumRounds(e.target.value);
+    console.log(e.target.value);
+  };
+
   return (
     <Fragment>
-      <Route path="/game" />
-      <HomeTitle>Who's Who?</HomeTitle>
-      <HomeStyle>
-        Genre:
-        <select
-          value={selectedGenre}
-          onChange={(event) => {
-            setSelectedGenre(event.target.value);
-          }}
-        >
-          <option value="" />
-          {genres.map((genre) => (
-            <option key={genre} value={genre}>
-              {genre}
-            </option>
-          ))}
-        </select>
-      </HomeStyle>
-      <HomeStyle>
-        Number of Songs per Guess:
-        <input
-          type="range"
-          min="1"
-          max="3"
-          value={numSongs}
-          onChange={handleChange1}
-        ></input>
-        <p>Value: {numSongs}</p>
-      </HomeStyle>
-      <HomeStyle>
-        Number of Artists to Guess:
-        <input
-          type="range"
-          min="2"
-          max="4"
-          value={numArtists}
-          onChange={handleChange2}
-        ></input>
-        <p>Value: {numArtists}</p>
-      </HomeStyle>
-      <Link to={"/game"}>
-        <Button
-          type="submit"
-          disabled={selectedGenre === null || selectedGenre === ""}
-          className="submitWho"
-          h={"35px"}
-          w={"100px"}
-          br={"10px"}
-          p={"relative"}
-          t={"15%"}
-          l={"47.45%"}
-        >
-          Begin
-        </Button>
-      </Link>
-      {/* If selectedGenre is null or "", then the home page will display the message. The message becomes disabled once a genre is selected. */}
-      {selectedGenre === null || selectedGenre === "" ? (
-        <p style={{ color: "red", textAlign: "center" }}>
-          A genre is required.
-        </p>
-      ) : (
-        ""
-      )}
+      <Card br="0.5rem" p="1.5rem 4rem">
+        <Route path="/game" />
+        <HomeTitle>Who's Who?</HomeTitle>
+        <HomeStyle>
+          Genre:
+          <select
+            value={selectedGenre}
+            onChange={(event) => {
+              setSelectedGenre(event.target.value);
+            }}
+          >
+            <option value="" />
+            {genres.map((genre) => (
+              <option key={genre} value={genre}>
+                {genre}
+              </option>
+            ))}
+          </select>
+        </HomeStyle>
+        <HomeStyle>
+          Number of Songs per Guess:
+          <input
+            type="range"
+            min="1"
+            max="3"
+            value={numSongs}
+            onChange={handleChange1}
+          ></input>
+          <p>Value: {numSongs}</p>
+        </HomeStyle>
+        <HomeStyle>
+          Number of Artists to Guess:
+          <input
+            type="range"
+            min="2"
+            max="4"
+            value={numArtists}
+            onChange={handleChange2}
+          ></input>
+          <p>Value: {numArtists}</p>
+        </HomeStyle>
+        <HomeStyle>
+          Number of Rounds:
+          <input
+            type="range"
+            min="1"
+            max="10"
+            value={numRounds}
+            onChange={handleRoundsChange}
+          ></input>
+          <p>Value: {numRounds}</p>
+        </HomeStyle>
+        <Link to={"/game"}>
+          <Button
+            type="submit"
+            disabled={selectedGenre === null || selectedGenre === ""}
+            className="submitWho"
+            h={"35px"}
+            w={"100px"}
+            br={"10px"}
+            p={"relative"}
+            t={"15%"}
+            l={"47.45%"}
+          >
+            Begin
+          </Button>
+        </Link>
+        {/* If selectedGenre is null or "", then the home page will display the message. The message becomes disabled once a genre is selected. */}
+        {selectedGenre === null || selectedGenre === "" ? (
+          <p style={{ color: "red", textAlign: "center" }}>
+            A genre is required.
+          </p>
+        ) : (
+          ""
+        )}
+      </Card>
     </Fragment>
   );
 };

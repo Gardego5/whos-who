@@ -6,13 +6,16 @@ import Button from "./Button";
 
 const SongCard = ({ title, onPlay, onStop }) => {
   return (
-    <Card w="10rem" br="0.5rem">
+    <Card
+      w="10rem"
+      br="0.5rem"
+    >
       <p>{title ? title : "Song Title"}</p>
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <Button onClick={onPlay} br="0.5rem" b="1px solid black">
+      <div style={{ display: "flex", justifyContent: "space-between", bottom: "0" }}>
+        <Button onClick={onPlay} br="0.5rem">
           Play
         </Button>
-        <Button onClick={onStop} br="0.5rem" b="1px solid black">
+        <Button onClick={onStop} br="0.5rem">
           Stop
         </Button>
       </div>

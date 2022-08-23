@@ -12,6 +12,7 @@ const GENRE_KEY = "genreKey";
 const SONGS_KEY = "songsKey";
 const ARTISTS_KEY = "artistsKey";
 const RESULTS_KEY = "RESULTS_KEY";
+const ROUNDS_KEY = "roundsKey";
 
 const StyledContainer = styled.div`
   & header {
@@ -54,12 +55,15 @@ const Game = () => {
     retrievedArtists: Number.parseInt(
       JSON.parse(localStorage.getItem(ARTISTS_KEY))
     ),
+    retrievedRounds: Number.parseInt(
+      JSON.parse(localStorage.getItem(ROUNDS_KEY))
+    ),
   });
 
   /* * * Game * * */
   const [game, updateGame] = useState({
     tries: 5,
-    rounds: 5,
+    rounds: config.retrievedRounds,
     results: [],
   });
 
@@ -70,14 +74,18 @@ const Game = () => {
         results: [...game.results, config.retrievedArtists - artists.length],
       };
 
-      localStorage.setItem(RESULTS_KEY, JSON.stringify({ newGameState, win: true }));
+      localStorage.setItem(
+        RESULTS_KEY,
+        JSON.stringify({ game: newGameState, win: true })
+      );
       updateRenderOverride(<Redirect to="result" />);
     } else if (correct) {
       updateGame({
         ...game,
         results: [...game.results, config.retrievedArtists - artists.length],
-      })
-      updateInitialSong(undefined)
+      });
+
+      updateInitialSong(undefined);
     } else {
       updateArtists(artists.filter((a) => a.artist !== artist));
       updateGame({ ...game, tries: game.tries - 1 });
@@ -199,8 +207,24 @@ const Game = () => {
   ) : (
     <StyledContainer>
       <header>
-        <h1>Who's Who?</h1>
-        <ProgressBar />
+        <h1 style={{ position: "relative" }}>
+          Who's Who?
+          <span
+            style={{
+              position: "absolute",
+              fontSize: "0.5em",
+              bottom: "-0.7em",
+              right: "0.25em",
+            }}
+          >
+            {config.retrievedGenre}
+          </span>
+        </h1>
+        <ProgressBar
+          round={game?.results?.length}
+          rounds={game?.rounds}
+          tries={game?.tries}
+        />
       </header>
       <main>
         <div className="flex-row" id="songs">
