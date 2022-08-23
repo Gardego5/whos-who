@@ -9,6 +9,10 @@ import fetchFromSpotify from "../services/api";
 import { async } from "regenerator-runtime";
 
 const TOKEN_KEY = "whos-who-access-token";
+const GENRE_KEY = "genreKey";
+const SONGS_KEY = "songsKey";
+const ARTISTS_KEY = "artistsKey";
+const RESULTS_KEY = "RESULTS_KEY";
 
 const StyledContainer = styled.div`
   & header {
@@ -44,14 +48,37 @@ const Game = () => {
   const [artists, updateArtists] = useState();
 
   const [config, updateConfig] = useState({
-    retrievedGenre: JSON.parse(localStorage.getItem("genreKey")),
+    retrievedGenre: JSON.parse(localStorage.getItem(GENRE_KEY)),
     retrievedSongs: Number.parseInt(
-      JSON.parse(localStorage.getItem("songsKey"))
+      JSON.parse(localStorage.getItem(SONGS_KEY))
     ),
     retrievedArtists: Number.parseInt(
-      JSON.parse(localStorage.getItem("artistsKey"))
+      JSON.parse(localStorage.getItem(ARTISTS_KEY))
     ),
   });
+
+  /* * * Game * * */
+  const [game, updateGame] = useState({
+    tries: 2,
+  });
+
+  const testCorrect = (artist, correct) => (event) => {
+    if (correct) {
+      localStorage.setItem(RESULTS_KEY, JSON.stringify({game, win: true}));
+      updateRenderOverride(<Redirect to="result" />);
+      return;
+    } else {
+      if (game.tries > 0) {
+        updateArtists(
+          artists.filter((a) => a.artist !== artist )
+        );
+        updateGame({ ...game, tries: game.tries - 1 });
+      } else {
+        localStorage.setItem(RESULTS_KEY, JSON.stringify({game, win: false}));
+      }
+    }
+  };
+  /* * * Game * * */
 
   const getRandomSong = async (genre) => {
     const response = await fetchFromSpotify({
@@ -71,7 +98,7 @@ const Game = () => {
     const originalArtist = await fetchFromSpotify({
       token,
       endpoint: `artists/${initialSong.artists[0].id}`,
-    })
+    });
 
     const artistsResponse = await fetchFromSpotify({
       token,
@@ -136,18 +163,25 @@ const Game = () => {
         <div className="flex-row" id="songs">
           {artists === undefined
             ? Array(config.retrievedSongs)
-              .fill(null)
-              .map((none, idx) => <SongCard key={idx} />)
-            : songs
-              .map((song, idx) => <SongCard key={idx} title={song.name} />)}
+                .fill(null)
+                .map((none, idx) => <SongCard key={idx} />)
+            : songs.map((song, idx) => (
+                <SongCard key={idx} title={song.name} />
+              ))}
         </div>
         <div className="flex-row" id="artists">
           {artists === undefined
             ? Array(config.retrievedArtists)
-              .fill(null)
-              .map((none, idx) => <ArtistCard key={idx} />)
-            : artists
-              .map(({artist}, idx) => <ArtistCard key={idx} picSrc={artist?.images[0]?.url} name={artist.name} />)}
+                .fill(null)
+                .map((none, idx) => <ArtistCard key={idx} />)
+            : artists.map(({ artist, correct }, idx) => (
+                <ArtistCard
+                  key={idx}
+                  picSrc={artist?.images[0]?.url}
+                  name={artist.name}
+                  onClick={testCorrect(artist, correct)}
+                />
+              ))}
         </div>
       </main>
     </StyledContainer>
