@@ -1,5 +1,6 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { Route, Link } from "react-router-dom";
+import styled from "styled-components";
 import fetchFromSpotify, { request } from "../services/api";
 
 import Button from "../components/Button";
@@ -7,6 +8,13 @@ import Button from "../components/Button";
 const AUTH_ENDPOINT =
   "https://nuod0t2zoe.execute-api.us-east-2.amazonaws.com/FT-Classroom/spotify-auth-token";
 const TOKEN_KEY = "whos-who-access-token";
+
+const HomeTitle = styled.h1`
+  position: relative;
+  text-align: center;
+  justify-content: center;
+  font-size: 4em;
+`;
 
 const Home = () => {
   const [genres, setGenres] = useState([]);
@@ -17,7 +25,6 @@ const Home = () => {
 
   const [numSongs, setNumSongs] = useState(null);
   const [numArtists, setNumArtists] = useState(null);
-  // const [retrievedSelectedGenre, retrievedSetSelectedGenre] = useState("");
 
   useEffect(() => {
     if (selectedGenre === null) {
@@ -26,13 +33,6 @@ const Home = () => {
     }
     localStorage.setItem("genreKey", JSON.stringify(selectedGenre));
   }, [selectedGenre]);
-
-  // const retrievedGenre = JSON.parse(localStorage.getItem("genreKey"));
-
-  const retrievedSelectedGenre = JSON.parse(localStorage.getItem("genreGKey"));
-  // if (retrievedSelectedGenre) {
-  //   setSelectedGenre = retrievedSelectedGenre;
-  // }
 
   useEffect(() => {
     if (numSongs === null) {
@@ -59,6 +59,12 @@ const Home = () => {
     console.log(response);
     setGenres(response.genres);
     setConfigLoading(false);
+  };
+
+  const initialConfigError = {
+    isError: false,
+    message: "",
+    field: "",
   };
 
   useEffect(() => {
@@ -105,12 +111,14 @@ const Home = () => {
   return (
     <Fragment>
       <Route path="/game" />
-      <h1>Who's Who?</h1>
+      <HomeTitle>Who's Who?</HomeTitle>
       <div>
         Genre:
         <select
           value={selectedGenre}
-          onChange={(event) => setSelectedGenre(event.target.value)}
+          onChange={(event) => {
+            setSelectedGenre(event.target.value);
+          }}
         >
           <option value="" />
           {genres.map((genre) => (
@@ -144,6 +152,8 @@ const Home = () => {
       </div>
       <Link to={"/game"}>
         <Button
+          type="submit"
+          disabled={selectedGenre === null || selectedGenre === ""}
           className="submitWho"
           h={"55px"}
           w={"180px"}
@@ -156,6 +166,11 @@ const Home = () => {
           Begin
         </Button>
       </Link>
+      {selectedGenre === null || selectedGenre === "" ? (
+        <p style={{ color: "red" }}>A genre is required.</p>
+      ) : (
+        ""
+      )}
     </Fragment>
   );
 };
