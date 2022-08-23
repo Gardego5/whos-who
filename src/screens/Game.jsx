@@ -67,12 +67,13 @@ const Game = () => {
       updateRenderOverride(<Redirect to="result" />);
       return;
     } else {
-      if (game.tries > 0) {
-        updateArtists(artists.filter((a) => a.artist !== artist));
-        updateGame({ ...game, tries: game.tries - 1 });
-      } else {
-        localStorage.setItem(RESULTS_KEY, JSON.stringify({ game, win: false }));
-      }
+      updateArtists(artists.filter((a) => a.artist !== artist));
+      updateGame({ ...game, tries: game.tries - 1 });
+    }
+
+    if (game.tries <= 0) {
+      localStorage.setItem(RESULTS_KEY, JSON.stringify({ game, win: false }));
+      updateRenderOverride(<Redirect to="result" />);
     }
   };
 
@@ -178,7 +179,7 @@ const Game = () => {
   });
 
   if (renderOverride) {
-    songs.forEach(({ audio }) => audio.stop());
+    songs?.forEach(({ audio }) => audio.stop());
   }
 
   return renderOverride ? (
