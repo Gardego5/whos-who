@@ -4,6 +4,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 
 import App from "./App";
 import GlobalStyles from "./GlobalStyles";
+import "./index.css";
 
 const MOUNT_NODE = document.getElementById("app");
 

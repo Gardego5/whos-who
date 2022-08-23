@@ -7,8 +7,8 @@ const Button = styled.button`
   top: ${({ t }) => t};
   left: ${({ l }) => l};
   border-radius: ${({ br }) => br};
-  margin: ${({m}) => m};
-  font-size: 12px;
+  margin: ${({ m }) => m};
+  font-size: 14px;
   &:hover {
     background-color: #c9c9c9;
     cursor: pointer;

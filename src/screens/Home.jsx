@@ -16,6 +16,13 @@ const HomeTitle = styled.h1`
   font-size: 4em;
 `;
 
+const HomeStyle = styled.div`
+  position: relative;
+  text-align: center;
+  justify-content: center;
+  font-size: 16px;
+`;
+
 const Home = () => {
   const [genres, setGenres] = useState([]);
   const [selectedGenre, setSelectedGenre] = useState(null);
@@ -26,6 +33,7 @@ const Home = () => {
   const [numSongs, setNumSongs] = useState(null);
   const [numArtists, setNumArtists] = useState(null);
 
+  //This useEffect hook is used to both set selectedGenre in local storage and retrieve it from local storage
   useEffect(() => {
     if (selectedGenre === null) {
       const savedGenre = JSON.parse(localStorage.getItem("genreKey"));
@@ -34,6 +42,7 @@ const Home = () => {
     localStorage.setItem("genreKey", JSON.stringify(selectedGenre));
   }, [selectedGenre]);
 
+  //This useEffect hook is used to both set numSongs in local storage and retrieve it from local storage
   useEffect(() => {
     if (numSongs === null) {
       const savedSongs = JSON.parse(localStorage.getItem("songsKey"));
@@ -42,6 +51,7 @@ const Home = () => {
     localStorage.setItem("songsKey", JSON.stringify(numSongs));
   }, [numSongs]);
 
+  //This useEffect hook is used to both set numArtists in local storage and retrieve it from local storage
   useEffect(() => {
     if (numArtists === null) {
       const savedArtists = JSON.parse(localStorage.getItem("artistsKey"));
@@ -98,11 +108,13 @@ const Home = () => {
     return <div>Loading...</div>;
   }
 
+  //This function is used to set numSongs with the changes made in the slider
   const handleChange1 = (e) => {
     setNumSongs(e.target.value);
     console.log(e.target.value);
   };
 
+  //This function is used to set numArtists with the changes made in the slider
   const handleChange2 = (e) => {
     setNumArtists(e.target.value);
     console.log(e.target.value);
@@ -112,7 +124,7 @@ const Home = () => {
     <Fragment>
       <Route path="/game" />
       <HomeTitle>Who's Who?</HomeTitle>
-      <div>
+      <HomeStyle>
         Genre:
         <select
           value={selectedGenre}
@@ -127,8 +139,8 @@ const Home = () => {
             </option>
           ))}
         </select>
-      </div>
-      <div>
+      </HomeStyle>
+      <HomeStyle>
         Number of Songs per Guess:
         <input
           type="range"
@@ -138,8 +150,8 @@ const Home = () => {
           onChange={handleChange1}
         ></input>
         <p>Value: {numSongs}</p>
-      </div>
-      <div>
+      </HomeStyle>
+      <HomeStyle>
         Number of Artists to Guess:
         <input
           type="range"
@@ -149,25 +161,27 @@ const Home = () => {
           onChange={handleChange2}
         ></input>
         <p>Value: {numArtists}</p>
-      </div>
+      </HomeStyle>
       <Link to={"/game"}>
         <Button
           type="submit"
           disabled={selectedGenre === null || selectedGenre === ""}
           className="submitWho"
-          h={"55px"}
-          w={"180px"}
-          br={"20px"}
-          // p={"absolute"}
-          // t={"15%"}
-          // l={"42.4%"}
-          // onClick={foundUsers}
+          h={"35px"}
+          w={"100px"}
+          br={"10px"}
+          p={"relative"}
+          t={"15%"}
+          l={"47.45%"}
         >
           Begin
         </Button>
       </Link>
+      {/* If selectedGenre is null or "", then the home page will display the message. The message becomes disabled once a genre is selected. */}
       {selectedGenre === null || selectedGenre === "" ? (
-        <p style={{ color: "red" }}>A genre is required.</p>
+        <p style={{ color: "red", textAlign: "center" }}>
+          A genre is required.
+        </p>
       ) : (
         ""
       )}
