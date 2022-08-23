@@ -62,7 +62,7 @@ const Game = () => {
 
   /* * * Game * * */
   const [game, updateGame] = useState({
-    tries: 5,
+    tries: Math.max(config.retrievedArtists - 2, 1) * config.retrievedRounds,
     rounds: config.retrievedRounds,
     results: [],
   });
