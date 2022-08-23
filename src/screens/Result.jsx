@@ -35,11 +35,9 @@ const Result = () => {
  console.log(artistKey)
 
 useEffect(() => {
-  if(totalScore.game.tries > 0 && artistKey > 1){
+  if(totalScore.win){
     setScore(`Winner! you had ${totalScore.game.tries} amount of tries left!`)
-  } else if (totalScore.game.tries < 1) {
-    setScore(`You lose! you ran out of tries :(`)
-  } else if (totalScore.game.tries <= 1 && artistKey <= 2){
+  } else {
     setScore(`You lose! you ran out of tries :(`)
   }
 }, []) 
