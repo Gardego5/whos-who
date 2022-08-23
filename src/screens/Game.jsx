@@ -27,7 +27,7 @@ const StyledContainer = styled.div`
   & div.flex-row {
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: stretch;
     gap: 1rem;
     margin: 1rem;
   }
@@ -163,7 +163,11 @@ const Game = () => {
                 .fill(null)
                 .map((none, idx) => <SongCard key={idx} />)
             : songs.map((song, idx) => (
-                <SongCard key={idx} title={song.name} />
+                <SongCard
+                  key={idx}
+                  title={song.name}
+                  songSrc={song.preview_url}
+                />
               ))}
         </div>
         <div className="flex-row" id="artists">
