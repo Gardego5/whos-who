@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import Card from '../components/Card'
 import styled from "styled-components";
 import Button from "../components/Button";
@@ -23,8 +23,30 @@ const StyledContainer = styled.div`
   & Button {
     text-align: center;
   }
+  & #score {
+    color: red;
+  }
 `;
 const Result = () => {
+  const [score, setScore] = useState(null)
+
+ const totalScore = JSON.parse(localStorage.getItem('RESULTS_KEY'))
+
+useEffect(() => {
+  if(totalScore.game.tries > 0){
+    setScore(`Winner! you had ${totalScore.game.tries} amount of tries left!`)
+  } else if (totalScore.game.tries <1)
+    setScore(`You lose! you ran out of tries :(`)
+}, []) 
+
+console.log(score)
+
+
+
+
+
+
+
   return <StyledContainer style={{textAlign: 'center'}}>
  <header>
 
@@ -32,6 +54,12 @@ const Result = () => {
  </header>
  <Card>
   <h3 style={{textAlign: 'center'}}>Results</h3>
+  {score != null ? 
+  <p id="score">{score}</p>  
+
+
+: null}
+  
  </Card>
 <Link to='/'><Button h = '30px' m = 'auto' style={{justifyContent: 'center'}}>Home</Button></Link>
  <Link to='/game'><Button h = '30px' m = 'auto' style={{justifyContent: 'center'}}>Play Again</Button></Link>
