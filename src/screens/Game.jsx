@@ -75,6 +75,15 @@ const Game = () => {
       }
     }
   };
+
+  const play = (audio) => (event) => {
+    songs.forEach(({ audio }) => audio.stop());
+    audio.play();
+  };
+
+  const stop = (audio) => (event) => {
+    audio.stop();
+  };
   /* * * Game * * */
 
   const getRandomSong = async (genre) => {
@@ -123,16 +132,27 @@ const Game = () => {
       },
     });
 
+    const audio = (songSrc) =>
+      new Howl({
+        src: songSrc,
+        html5: true,
+      });
+
     const song_choices = randomChoices(
       songsResponse.tracks.items.filter((song) => song.preview_url !== null),
       config.retrievedSongs
     );
 
     if (song_choices.length < config.retrievedSongs) {
-      console.log("Failed to load songs, picking new initialSong.")
+      console.log("Failed to load songs, picking new initialSong.");
       updateInitialSong(undefined);
     } else {
-      updateSongs(song_choices);
+      updateSongs(
+        song_choices.map((song) => ({
+          song,
+          audio: audio(song.preview_url),
+        }))
+      );
     }
   };
 
@@ -157,6 +177,10 @@ const Game = () => {
     if (token && initialSong && songs === null) getSongs();
   });
 
+  if (renderOverride) {
+    songs.forEach(({ audio }) => audio.stop());
+  }
+
   return renderOverride ? (
     renderOverride
   ) : (
@@ -171,11 +195,12 @@ const Game = () => {
             ? Array(config.retrievedSongs)
                 .fill(null)
                 .map((none, idx) => <SongCard key={idx} />)
-            : songs.map((song, idx) => (
+            : songs.map(({ song, audio }, idx) => (
                 <SongCard
                   key={idx}
                   title={song.name}
-                  songSrc={song.preview_url}
+                  onPlay={play(audio)}
+                  onStop={stop(audio)}
                 />
               ))}
         </div>
