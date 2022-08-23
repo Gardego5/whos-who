@@ -6,7 +6,6 @@ import ProgressBar from "../components/ProgressBar";
 import SongCard from "../components/SongCard";
 import ArtistCard from "../components/ArtistCard";
 import fetchFromSpotify from "../services/api";
-import { async } from "regenerator-runtime";
 
 const TOKEN_KEY = "whos-who-access-token";
 const GENRE_KEY = "genreKey";
@@ -28,7 +27,7 @@ const StyledContainer = styled.div`
   & div.flex-row {
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: stretch;
     gap: 1rem;
     margin: 1rem;
   }
@@ -64,17 +63,15 @@ const Game = () => {
 
   const testCorrect = (artist, correct) => (event) => {
     if (correct) {
-      localStorage.setItem(RESULTS_KEY, JSON.stringify({game, win: true}));
+      localStorage.setItem(RESULTS_KEY, JSON.stringify({ game, win: true }));
       updateRenderOverride(<Redirect to="result" />);
       return;
     } else {
       if (game.tries > 0) {
-        updateArtists(
-          artists.filter((a) => a.artist !== artist )
-        );
+        updateArtists(artists.filter((a) => a.artist !== artist));
         updateGame({ ...game, tries: game.tries - 1 });
       } else {
-        localStorage.setItem(RESULTS_KEY, JSON.stringify({game, win: false}));
+        localStorage.setItem(RESULTS_KEY, JSON.stringify({ game, win: false }));
       }
     }
   };
@@ -166,7 +163,11 @@ const Game = () => {
                 .fill(null)
                 .map((none, idx) => <SongCard key={idx} />)
             : songs.map((song, idx) => (
-                <SongCard key={idx} title={song.name} />
+                <SongCard
+                  key={idx}
+                  title={song.name}
+                  songSrc={song.preview_url}
+                />
               ))}
         </div>
         <div className="flex-row" id="artists">
