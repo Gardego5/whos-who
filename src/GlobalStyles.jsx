@@ -14,6 +14,10 @@ const GlobalStyles = createGlobalStyle`
   * {
     font-family: "Source Sans Pro";
   }
+
+  input[type=range]::-webkit-slider-thumb {
+    cursor: pointer;
+  }
 `;
 
 export default GlobalStyles;

@@ -164,7 +164,9 @@ const Home = () => {
         }}
       >
         <Route path="/game" />
-        <HomeTitle>Who's Who?</HomeTitle>
+        <HomeTitle>
+          Who's Who<span style={{ color: "red" }}>?</span>
+        </HomeTitle>
         <HomeStyle>
           Genre:
           <select
