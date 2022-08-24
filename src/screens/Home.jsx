@@ -159,7 +159,15 @@ const Home = () => {
 
   return (
     <Fragment>
-      <Card br="0.5rem" p="1.5rem 4rem">
+      <Card
+        br="0.5rem"
+        p="1.5rem 4rem"
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
         <Route path="/game" />
         <HomeTitle>Who's Who?</HomeTitle>
         <HomeStyle>
@@ -211,7 +219,7 @@ const Home = () => {
           ></input>
           <p>Value: {numRounds}</p>
         </HomeStyle>
-        <Link to={"/game"}>
+        <Link to={"/game"} style={{ width: "100px" }}>
           <Button
             type="submit"
             disabled={selectedGenre === null || selectedGenre === ""}
@@ -220,8 +228,6 @@ const Home = () => {
             w={"100px"}
             br={"10px"}
             p={"relative"}
-            t={"15%"}
-            l={"47.45%"}
           >
             Begin
           </Button>
