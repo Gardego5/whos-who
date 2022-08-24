@@ -5,6 +5,7 @@ import fetchFromSpotify, { request } from "../services/api";
 
 import Button from "../components/Button";
 import Card from "../components/Card";
+import Loading from "../components/Loading";
 
 const AUTH_ENDPOINT =
   "https://nuod0t2zoe.execute-api.us-east-2.amazonaws.com/FT-Classroom/spotify-auth-token";
@@ -136,7 +137,7 @@ const Home = () => {
   }, []);
 
   if (authLoading || configLoading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   //This function is used to set numSongs with the changes made in the slider
