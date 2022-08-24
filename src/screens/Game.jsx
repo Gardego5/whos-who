@@ -62,7 +62,7 @@ const Game = () => {
 
   /* * * Game * * */
   const [game, updateGame] = useState({
-    tries: 5,
+    tries: Math.max(config.retrievedArtists - 2, 1) * config.retrievedRounds,
     rounds: config.retrievedRounds,
     results: [],
   });
@@ -117,6 +117,8 @@ const Game = () => {
         offset: Math.floor(Math.random() * 4),
       },
     });
+
+    songs?.forEach(({ audio }) => audio.stop());
 
     updateInitialSong(response.tracks.items[Math.floor(Math.random() * 20)]);
     setTimeout(() => {
