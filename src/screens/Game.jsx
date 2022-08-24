@@ -7,6 +7,7 @@ import SongCard from "../components/SongCard";
 import ArtistCard from "../components/ArtistCard";
 import fetchFromSpotify from "../services/api";
 import Loading from "../components/Loading";
+import { Howl } from "howler";
 
 const TOKEN_KEY = "whos-who-access-token";
 const GENRE_KEY = "genreKey";
@@ -60,6 +61,14 @@ const Game = () => {
       JSON.parse(localStorage.getItem(ROUNDS_KEY))
     ),
   });
+
+  if (
+    config.retrievedGenre === null ||
+    config.retrievedSongs === null ||
+    config.retrievedArtists === null ||
+    config.retrievedRounds === null
+  )
+    return <Redirect to="/" />;
 
   /* * * Game * * */
   const [game, updateGame] = useState({
@@ -169,7 +178,6 @@ const Game = () => {
     );
 
     if (song_choices.length < config.retrievedSongs) {
-      console.log("Failed to load songs, picking new initialSong.");
       updateInitialSong(undefined);
     } else {
       updateSongs(
@@ -187,7 +195,6 @@ const Game = () => {
       if (storedTokenString) {
         const storedToken = JSON.parse(storedTokenString);
         if (storedToken.expiration > Date.now()) {
-          console.log("Token found in localStorage");
           setToken(storedToken.value);
         } else {
           return updateRenderOverride(<Redirect to="/" />);

@@ -79,8 +79,7 @@ const Home = () => {
       token: t,
       endpoint: "recommendations/available-genre-seeds",
     });
-    console.log(response);
-    console.log();
+   
     setGenres(
       response.genres.filter(
         (genre, idx) =>
@@ -116,14 +115,12 @@ const Home = () => {
     if (storedTokenString) {
       const storedToken = JSON.parse(storedTokenString);
       if (storedToken.expiration > Date.now()) {
-        console.log("Token found in localstorage");
         setAuthLoading(false);
         setToken(storedToken.value);
         loadGenres(storedToken.value);
         return;
       }
     }
-    console.log("Sending request to AWS endpoint");
     request(AUTH_ENDPOINT).then(({ access_token, expires_in }) => {
       const newToken = {
         value: access_token,
@@ -143,19 +140,16 @@ const Home = () => {
   //This function is used to set numSongs with the changes made in the slider
   const handleChange1 = (e) => {
     setNumSongs(e.target.value);
-    console.log(e.target.value);
   };
 
   //This function is used to set numArtists with the changes made in the slider
   const handleChange2 = (e) => {
     setNumArtists(e.target.value);
-    console.log(e.target.value);
   };
 
   //This function is used to set numArtists with the changes made in the slider
   const handleRoundsChange = (e) => {
     setNumRounds(e.target.value);
-    console.log(e.target.value);
   };
 
   return (

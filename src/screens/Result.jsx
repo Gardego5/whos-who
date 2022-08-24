@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Card from "../components/Card";
 import styled from "styled-components";
 import Button from "../components/Button";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 const StyledContainer = styled.div`
   & header {
     text-align: center;
@@ -24,7 +24,7 @@ const StyledContainer = styled.div`
     text-align: center;
   }
   & #score {
-    color: white;
+    color: black;
   }
 `;
 const Result = () => {
@@ -32,19 +32,27 @@ const Result = () => {
 
   const totalScore = JSON.parse(localStorage.getItem("RESULTS_KEY"));
   const artistKey = JSON.parse(localStorage.getItem("artistsKey"));
-  console.log(artistKey);
+  if (totalScore === null || artistKey === null) return <Redirect to="/" />;
 
   useEffect(() => {
-    if (totalScore.win) {
+    if (totalScore.win && totalScore.game.tries >= 1) {
       setScore(
-        `Winner! you had ${totalScore.game.tries} amount of tries left!`
+        `Winner! You had  ${
+          totalScore.game.tries
+        }  remaining attempt(s) out of ${
+          Math.max(artistKey - 2, 1) * totalScore.game.rounds
+        }`
       );
     } else {
-      setScore(`You lose! you ran out of tries :(`);
+      setScore(
+        `You lose! you used up ${
+          Math.max(artistKey - 2, 1) * totalScore.game.rounds
+        } attempt(s) out of ${
+          Math.max(artistKey - 2, 1) * totalScore.game.rounds
+        } :(`
+      );
     }
   }, []);
-
-  console.log(score);
 
   return (
     <StyledContainer style={{ textAlign: "center" }}>
@@ -63,7 +71,12 @@ const Result = () => {
         </Button>
       </Link>
       <Link to="/game">
-        <Button h="30px" m="auto" br="5px" style={{ justifyContent: "center" }}>
+        <Button
+          h="30px"
+          m="auto"
+          br="5px"
+          style={{ justifyContent: "center", marginLeft: "30px" }}
+        >
           Play Again
         </Button>
       </Link>
