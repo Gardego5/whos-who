@@ -1,5 +1,4 @@
 import React from "react";
-import { Howl, Howler } from "howler";
 
 import Card from "./Card";
 import Button from "./Button";
