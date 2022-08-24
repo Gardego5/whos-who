@@ -6,6 +6,7 @@ import ProgressBar from "../components/ProgressBar";
 import SongCard from "../components/SongCard";
 import ArtistCard from "../components/ArtistCard";
 import fetchFromSpotify from "../services/api";
+import Loading from "../components/Loading";
 
 const TOKEN_KEY = "whos-who-access-token";
 const GENRE_KEY = "genreKey";
@@ -206,6 +207,8 @@ const Game = () => {
 
   return renderOverride ? (
     renderOverride
+  ) : !initialSong || !songs || !artists ? (
+    <Loading />
   ) : (
     <StyledContainer>
       <header>
