@@ -7,6 +7,7 @@ import SongCard from "../components/SongCard";
 import ArtistCard from "../components/ArtistCard";
 import fetchFromSpotify from "../services/api";
 import Loading from "../components/Loading";
+import { Howl } from "howler";
 
 const TOKEN_KEY = "whos-who-access-token";
 const GENRE_KEY = "genreKey";
