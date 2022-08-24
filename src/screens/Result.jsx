@@ -24,7 +24,7 @@ const StyledContainer = styled.div`
     text-align: center;
   }
   & #score {
-    color: white;
+    color: black;
   }
 `;
 const Result = () => {
@@ -62,7 +62,7 @@ const Result = () => {
         </Button>
       </Link>
       <Link to="/game">
-        <Button h="30px" m="auto" br="5px" style={{ justifyContent: "center" }}>
+        <Button h="30px" m="auto" br="5px" style={{ justifyContent: "center", marginLeft: '30px' }}>
           Play Again
         </Button>
       </Link>

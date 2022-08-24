@@ -169,7 +169,7 @@ const Game = () => {
     );
 
     if (song_choices.length < config.retrievedSongs) {
-      console.log("Failed to load songs, picking new initialSong.");
+   
       updateInitialSong(undefined);
     } else {
       updateSongs(
@@ -187,7 +187,6 @@ const Game = () => {
       if (storedTokenString) {
         const storedToken = JSON.parse(storedTokenString);
         if (storedToken.expiration > Date.now()) {
-          console.log("Token found in localStorage");
           setToken(storedToken.value);
         } else {
           return updateRenderOverride(<Redirect to="/" />);
