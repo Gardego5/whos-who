@@ -62,6 +62,14 @@ const Game = () => {
     ),
   });
 
+  if (
+    config.retrievedGenre === null ||
+    config.retrievedSongs === null ||
+    config.retrievedArtists === null ||
+    config.retrievedRounds === null
+  )
+    return <Redirect to="/" />;
+
   /* * * Game * * */
   const [game, updateGame] = useState({
     tries: Math.max(config.retrievedArtists - 2, 1) * config.retrievedRounds,
@@ -170,7 +178,6 @@ const Game = () => {
     );
 
     if (song_choices.length < config.retrievedSongs) {
-   
       updateInitialSong(undefined);
     } else {
       updateSongs(
