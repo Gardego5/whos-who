@@ -118,6 +118,8 @@ const Game = () => {
       },
     });
 
+    songs?.forEach(({ audio }) => audio.stop());
+
     updateInitialSong(response.tracks.items[Math.floor(Math.random() * 20)]);
     setTimeout(() => {
       updateArtists(null);
