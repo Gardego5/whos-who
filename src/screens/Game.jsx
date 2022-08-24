@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Redirect } from "react-router-dom";
+import { Redirect, Route, Link } from "react-router-dom";
 import styled from "styled-components";
 
 import ProgressBar from "../components/ProgressBar";
@@ -125,6 +125,7 @@ const Game = () => {
         q: `${randomLetter()} genre:${genre}`,
         type: "track",
         offset: Math.floor(Math.random() * 4),
+        limit: "50",
       },
     });
 
@@ -219,20 +220,23 @@ const Game = () => {
     <Loading />
   ) : (
     <StyledContainer>
+      <Route path="/" />
       <header>
-        <h1 style={{ position: "relative" }}>
-          Who's Who?
-          <span
-            style={{
-              position: "absolute",
-              fontSize: "0.5em",
-              bottom: "-0.7em",
-              right: "0.25em",
-            }}
-          >
-            {config.retrievedGenre}
-          </span>
-        </h1>
+        <Link to="/" style={{ textDecoration: "none", color: "black" }}>
+          <h1 style={{ position: "relative" }}>
+            Who's Who?
+            <span
+              style={{
+                position: "absolute",
+                fontSize: "0.5em",
+                bottom: "-0.7em",
+                right: "0.25em",
+              }}
+            >
+              {config.retrievedGenre}
+            </span>
+          </h1>
+        </Link>
         <ProgressBar
           round={game?.results?.length}
           rounds={game?.rounds}
