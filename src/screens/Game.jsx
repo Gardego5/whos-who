@@ -143,6 +143,7 @@ const Game = () => {
       randomChoices(artistsResponse.artists, config.retrievedArtists - 1)
         .map((artist) => ({ correct: false, artist }))
         .concat([{ correct: true, artist: originalArtist }])
+        .sort(() => Math.random() - 0.5)
     );
   };
 
