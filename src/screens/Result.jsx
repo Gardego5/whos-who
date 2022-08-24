@@ -35,16 +35,15 @@ const Result = () => {
   console.log(artistKey);
 
   useEffect(() => {
-    if (totalScore.win) {
+    if (totalScore.win && totalScore.game.tries >= 1) {
       setScore(
-        `Winner! you had ${totalScore.game.tries} amount of tries left!`
+        `Winner! You had  ${totalScore.game.tries}  remaining attempt(s) out of ${totalScore.game.rounds * 2}`
       );
     } else {
-      setScore(`You lose! you ran out of tries :(`);
+      setScore(`You lose! you used up ${totalScore.game.rounds * 2} attempt(s) out of ${totalScore.game.rounds * 2} :(`);
     }
   }, []);
 
-  console.log(score);
 
   return (
     <StyledContainer style={{ textAlign: "center" }}>
