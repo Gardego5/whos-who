@@ -125,6 +125,7 @@ const Game = () => {
         q: `${randomLetter()} genre:${genre}`,
         type: "track",
         offset: Math.floor(Math.random() * 4),
+        limit: "50",
       },
     });
 
