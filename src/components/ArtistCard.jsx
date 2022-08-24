@@ -7,7 +7,7 @@ const ArtistCard = ({ picSrc, name, onClick }) => {
   return (
     <Card
       w="7rem"
-      h="11rem"
+      h="12rem"
       br="0.5rem"
       cur={name ? "pointer" : "default"}
       onClick={onClick}
